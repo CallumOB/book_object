@@ -13,17 +13,33 @@
 
     Written By: Callum O'Brien
     Date Created: 13/12/22
+
+    Updated 20/02/23: 
+        I received feedback from the lab test, specifying that the 'Publication' class
+        should also be capable of taking user input to create a class. This has been 
+        fully implemented, similarly to the 'Book' class.
 """
 
 class Publication(object):
     """ A class to store information about a publication such as title and price. """
-    def __init__(self, title: str, price: float):
-        self.title = title
-        self.price = price 
+    def __init__(self, title: str = "", price: float = 0):
+        # If the constructor is called with no arguments, the constructor prompts the user to enter their own values.
+        if title == "":
+            # This loop runs until the program is satisfied the user has entered the correct values.
+            while True:
+                try:
+                    self.title = input("\nPlease enter the title of the publication.\t")
+                    self.price = float(input("Please enter the publication price.\t"))
+                    break
+                except ValueError:
+                    print("\n\nPlease enter valid answers.\n\n")
+        else: 
+            self.title = title
+            self.price = price
 
     def __str__(self):
         """ Displays information about the publication including title and price. """
-        return f"Title: {self.title}\nPrice: €{self.price}"
+        return f"\nTitle: {self.title}\nPrice: €{self.price}\n"
 
 
 class Book(Publication):
@@ -34,7 +50,7 @@ class Book(Publication):
             # This loop runs until the program is satisfied the user has entered the correct values.
             while True:
                 try: 
-                    title = input("Please enter the title of the book.\t")
+                    title = input("\nPlease enter the title of the book.\t")
                     price = float(input("Please enter the book price.\t"))
                     Publication.__init__(self, title, price)
                     self.pages = int(input("Please enter the number of pages.\t"))
@@ -50,19 +66,23 @@ class Book(Publication):
     def __add__(self, other_book):
         """ When the user adds two books together, a new instance is created with the combined page count and price of the two books. """
         if type(other_book) == Book:
-            new_title = input("Please enter the title of the new book.\t")
+            new_title = input("\nPlease enter the title of the new book.\t")
             new_price = self.price + other_book.price
             new_pages = self.pages + other_book.pages
             new_book = Book(new_title, new_price, new_pages)
 
             return new_book
         else:
-            return "You can only add another book to a book instance.\n"
+            return "\nYou can only add another book to a book instance.\n"
 
     def __str__(self):
         """ Displays information about the book, including title, price and page count. """
-        return f"Title: {self.title}\nPrice: €{self.price}\nPage Count: {self.pages}\n"
+        return f"\nTitle: {self.title}\nPrice: €{self.price}\nPage Count: {self.pages}\n"
 
+
+pub1 = Publication()
+pub2 = Publication("pub2", 9.99)
+print(pub1, pub2)
 
 book1 = Book()
 print(book1)
